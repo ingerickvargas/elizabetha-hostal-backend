@@ -21,6 +21,8 @@ export const buildApp = () => {
 	origin: [
 		"http://127.0.0.1:3000",
 		"http://localhost:3000",
+		"https://elizabethahostal.com",
+		"https://www.elizabethahostal.com",
 	],
 	methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
 	allowedHeaders: ["Content-Type", "Authorization"],

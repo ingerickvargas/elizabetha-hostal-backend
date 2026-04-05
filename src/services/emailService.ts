@@ -1,6 +1,14 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("RESEND_API_KEY is not configured");
+  }
+
+  return new Resend(apiKey);
+}
 
 type BookingEmailParams = {
   to: string;
@@ -61,12 +69,14 @@ export async function sendBookingStatusEmail({
   `;
 
   try {
-    const result = await resend.emails.send({
-      from: process.env.EMAIL_FROM,
-      to,
-      subject,
-      html,
-    });
+    const resend = getResendClient();
+
+	await resend.emails.send({
+	  from: process.env.EMAIL_FROM!,
+	  to,
+	  subject,
+	  html,
+	});
 
     console.log(`[Email] Booking status email sent successfully to ${to}:`, result);
     return result;
