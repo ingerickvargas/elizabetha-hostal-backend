@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Room {
+  id                 String   @id
+  name               String
+  name_es            String?
+  price              Int
+  description        String
+  description_es     String?
+  longDescription    String
+  longDescription_es String?
+  image              String
+  galleryImages      String[]
+  tag                String
+  tag_es             String?
+  size               String
+  size_es            String?
+  bathroom           String
+  bathroom_es        String?
+  amenity            String
+  amenity_es         String?
+  capacity           Int
+  features           Json
+  isActive            Boolean  @default(true)
+
+  bookings            Booking[]
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Booking {
+  id          String   @id @default(uuid())
+  roomId      String
+  roomName    String
+
+  checkIn     DateTime
+  checkOut    DateTime
+
+  guests      Int
+  guestName   String
+  guestEmail  String
+  guestPhone  String
+
+  status      BookingStatus @default(PENDING)
+
+  room        Room     @relation(fields: [roomId], references: [id])
+
+  createdAt   DateTime @default(now())
+}
+
+model AdminUser {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
