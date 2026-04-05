@@ -71,7 +71,7 @@ export async function sendBookingStatusEmail({
   try {
     const resend = getResendClient();
 
-	await resend.emails.send({
+    const result =await resend.emails.send({
 	  from: process.env.EMAIL_FROM!,
 	  to,
 	  subject,
